@@ -8,8 +8,16 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
     class Program
     {
         //Track found solutions for brute force
-        public List<Solution> KnownSolutions = new List<Solution>();
+        public List<Solution> KnownSolutions;
         public Random rand = new Random();
+        
+
+
+        public Program()
+        {
+            KnownSolutions = new List<Solution>();
+
+        }
         //Create and populate test list of items
         public static List<Item> Things = new List<Item>()
         {
@@ -47,16 +55,37 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
                     knapSack(maxCap, items, n - 1));
         }
         //Brute force returns the number of items in list Solutions
+        //This doesn't find optimal solutions it just finds solutions
         public int BruteForceMethod(int maxCap, int n)
         {
-            KnownSolutions.Clear(); 
-            for(int i =0; i <= n; i++)
-            {
-                for(int cnt = 0; cnt <= maxCap; cnt++)
-                {
+            int randomIndex;
 
+            KnownSolutions.Clear();
+          //large number to sample possible solutions, more items, higher this should be
+            for (int i =0; i <= 6000; i++)
+            {
+                Solution tempSol = new Solution();       
+                for (int cnt = 0; cnt <= n + 10; cnt++)
+                {
+                  randomIndex = rand.Next(0, Things.Count);
+                    //if list is empty add frist item to the list
+                    if(tempSol == null){
+                       tempSol.Items.Add(Things[randomIndex]);
+                    }
+                    //If it isnt in the list and if adding its weight is less than max then it works
+                    else if(!tempSol.Items.Contains(Things[randomIndex]) && (tempSol.totalWeight + Things[randomIndex].weight) <= maxCap) {
+                        tempSol.Items.Add(Things[randomIndex]);             
+                    }                 
                 }
+                //check the solution doesn't already exist in some form
+                if(checkSolution(tempSol.Items, KnownSolutions))
+                {
+                    KnownSolutions.Add(new Solution(tempSol.Items, tempSol.totalWeight)); 
+                }
+               
             }
+            Console.Write("Brute Force found ");
+            Console.Write(KnownSolutions.Count); 
             return KnownSolutions.Count; 
         }
 
@@ -72,7 +101,7 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
 
             int omega = 1; 
            //second for loop
-              //omega = omega * p[i]
+           //omega = omega * p[i]
 
 
             //return 1/omega
@@ -110,12 +139,16 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
                 {
                     //things.count + 1 because last value is non inclusive
                     int col = rand.Next(0, Things.Count + 1);
+                    //if prob 1/ 2*Things.Count then flip else leave it alone 
                     randomWalkMatrix[row, col] = 1; 
                     
                 }
             }
-
-
+            for(int j= 0; j < 100; j++)
+            {
+             //Check  Y[j] * w <= Wi-1
+            }
+            //Return Ys
 
         }
 
@@ -125,8 +158,8 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
             int maxCapacity = 30;
             int n = Things.Count;
             Console.WriteLine(knapSack(maxCapacity, Things, n));
-            Console.WriteLine("Brute force found ", program.BruteForceMethod(maxCapacity, n), "number of solutions");
-            Console.WriteLine("MCMC ", program.MCMCMethod(), "number of solutions");
+            program.BruteForceMethod(maxCapacity, n);
+            Console.WriteLine("\n MCMC ", program.MCMCMethod(), "number of solutions");
 
         }
     }
@@ -137,6 +170,17 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
     {
         public List<Item> Items;
         public int totalWeight; 
+
+        public Solution()
+        {
+            Items = new List<Item>();
+            totalWeight = 0; 
+        }
+        public Solution( List<Item> items, int TW)
+        {
+            Items = items;
+            totalWeight = TW;
+        }
 
     }
 
