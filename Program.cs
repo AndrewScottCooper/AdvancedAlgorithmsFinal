@@ -1,5 +1,7 @@
-﻿using System;
-using System.Collections.Generic; 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 
 namespace AdvancedAlgorithmsFinalProjectExperiments
 {
@@ -7,6 +9,7 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
     {
         //Track found solutions for brute force
         public List<Solution> KnownSolutions = new List<Solution>();
+        public Random rand = new Random();
         //Create and populate test list of items
         public static List<Item> Things = new List<Item>()
         {
@@ -61,25 +64,59 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
         public int MCMCMethod()
         {
             KnownSolutions.Clear();
+            //Total possible weight of all items
+            for (int i = 0; i < 5000; i++)
+            {
+                int itemTW = MaxWeight(Things);
+            }
+
+            int omega = 1; 
+           //second for loop
+              //omega = omega * p[i]
 
 
+            //return 1/omega
             return KnownSolutions.Count;
         }
 
-        //Check to see if a new solution is an existing solution 
-        //If we consider 3, 4, 5 and 4, 3, 5 different this works, but if they're the same,
-        //this should be changed to ulitze SequenceEqual
+        //Compare if new solution already exist, if it doesn't then its new and returns true
         public bool checkSolution(List<Item> test, List<Solution> existing)
         {
-            foreach(Solution sol in existing)
+           foreach(Solution sol in existing)
             {
-                for (int i =0; i < sol.Items.Count; i++)
-                {
-                    if (sol.Items[i].value == test[i].value)
-                        return false; 
-                }
+                if (sol.Items.SequenceEqual(test))
+                    return false;
             }
             return true; 
+        }
+
+        public int MaxWeight(List<Item> items)
+        {
+            int totalWeight = 0;
+            foreach (Item I in items)
+                totalWeight += I.weight;
+
+            return totalWeight;
+        }
+
+        public void MCMCRandomWalk()
+        {
+            //
+            int[,] randomWalkMatrix = new int[100, Things.Count];
+
+            for(int i = 0; i < 10000; i++)
+            {
+                for (int row = 0; row < 100; row++)
+                {
+                    //things.count + 1 because last value is non inclusive
+                    int col = rand.Next(0, Things.Count + 1);
+                    randomWalkMatrix[row, col] = 1; 
+                    
+                }
+            }
+
+
+
         }
 
        static void Main(string[] args)
