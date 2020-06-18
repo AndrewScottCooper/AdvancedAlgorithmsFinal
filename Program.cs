@@ -27,7 +27,8 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
             new Item(15, 6),
             new Item(15, 10),
             new Item(17, 12),
-            new Item(9, 15)
+            new Item(9, 15),
+            new Item(10, 20)
         }; 
 
         static int max(int valueA, int valueB)
@@ -59,22 +60,26 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
         public int BruteForceMethod(int maxCap, int n)
         {
             int randomIndex;
+            int attempts;
 
             KnownSolutions.Clear();
           //large number to sample possible solutions, more items, higher this should be
-            for (int i =0; i <= 6000; i++)
+            for (int i =0; i <= 10000; i++)
             {
-                Solution tempSol = new Solution();       
-                for (int cnt = 0; cnt <= n + 10; cnt++)
+                Solution tempSol = new Solution();
+                //random amount of times to attempt to solve knapsack
+                attempts = rand.Next(0, n + 100);
+                for (int cnt = 0; cnt <= attempts; cnt++)
                 {
-                  randomIndex = rand.Next(0, Things.Count);
+                  randomIndex = rand.Next(1, Things.Count);
                     //if list is empty add frist item to the list
                     if(tempSol == null){
                        tempSol.Items.Add(Things[randomIndex]);
                     }
                     //If it isnt in the list and if adding its weight is less than max then it works
                     else if(!tempSol.Items.Contains(Things[randomIndex]) && (tempSol.totalWeight + Things[randomIndex].weight) <= maxCap) {
-                        tempSol.Items.Add(Things[randomIndex]);             
+                        tempSol.Items.Add(Things[randomIndex]);
+                        tempSol.totalWeight += Things[randomIndex].weight; 
                     }                 
                 }
                 //check the solution doesn't already exist in some form
@@ -85,7 +90,7 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
                
             }
             Console.Write("Brute Force found ");
-            Console.Write(KnownSolutions.Count); 
+            Console.Write(KnownSolutions.Count.ToString(), "number of solutions"); 
             return KnownSolutions.Count; 
         }
 
@@ -128,39 +133,74 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
             return totalWeight;
         }
 
-        public void MCMCRandomWalk()
+        public void MCMCRandomWalk(int maxCap)
         {
-            //
-            int[,] randomWalkMatrix = new int[100, Things.Count];
 
+            KnownSolutions.Clear();
             for(int i = 0; i < 10000; i++)
             {
+                int[,] randomWalkMatrix = new int[100, Things.Count];
+                Solution tempSol = new Solution();
+
                 for (int row = 0; row < 100; row++)
                 {
                     //things.count + 1 because last value is non inclusive
-                    int col = rand.Next(0, Things.Count + 1);
-                    //if prob 1/ 2*Things.Count then flip else leave it alone 
-                    randomWalkMatrix[row, col] = 1; 
+                    int col = rand.Next(0, Things.Count);
                     
+                    int prob = rand.Next(1, 2*Things.Count); 
+                    //if prob 1/ 2*Things.Count then flip else leave it alone 
+                    if(prob == 1)
+                    {
+                        randomWalkMatrix[row, col] = 1;
+                    }                     
+               }
+                //Nested for loop, work through the random matrix to build a solution
+                for(int r = 0; r < 100; r++)
+                {
+                    for(int c = 0; c< Things.Count; c++)
+                    {
+                        //if a bit was flipped 
+                        if(randomWalkMatrix[r,c] == 1)
+                        {
+                            //if the list is empty add the item to with the corrisponding column index
+                          if(tempSol.Items == null)
+                            {
+                                tempSol.Items.Add(Things[c]); 
+                            }
+                          //otherwise, check we dont already have the item in the list, and that the weight would be less than or the limit 
+                          //by adding the item to the list 
+                          else if (!tempSol.Items.Contains(Things[c]) && (tempSol.totalWeight + Things[c].weight) <= maxCap)
+                            {
+                                tempSol.Items.Add(Things[c]);
+                                tempSol.totalWeight += Things[c].weight; 
+                            }
+                        }
+                    }
+                }
+                //if this solution doesn't already exist in some way add it to known solutions
+                if (checkSolution(tempSol.Items, KnownSolutions))
+                {
+                    KnownSolutions.Add(new Solution(tempSol.Items, tempSol.totalWeight));
+                   
                 }
             }
-            for(int j= 0; j < 100; j++)
-            {
+          //  for(int j= 0; j < 100; j++)
+          //  {
              //Check  Y[j] * w <= Wi-1
-            }
+          //  }
             //Return Ys
-
+            Console.WriteLine(KnownSolutions.Count); 
         }
 
        static void Main(string[] args)
         {
             Program program = new Program();
-            int maxCapacity = 30;
+            int maxCapacity = 50;
             int n = Things.Count;
             Console.WriteLine(knapSack(maxCapacity, Things, n));
             program.BruteForceMethod(maxCapacity, n);
             Console.WriteLine("\n MCMC ", program.MCMCMethod(), "number of solutions");
-
+            program.MCMCRandomWalk(maxCapacity);
         }
     }
 
