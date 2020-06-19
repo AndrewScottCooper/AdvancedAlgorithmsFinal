@@ -7,11 +7,10 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
 {
     class Program
     {
-        //Track found solutions for brute force
+        //Track found solutions
         public List<Solution> KnownSolutions;
         public Random rand = new Random();
         
-
 
         public Program()
         {
@@ -36,7 +35,7 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
             return (valueA > valueB) ? valueA : valueB;
         }
 
-        //recursive method for an optimal this isn't for counting solutions, we need dynamic programming for our actual solution
+        //recursive method for an optimal this isn't for counting solutions
         static int knapSack(int maxCap, List<Item> items, int n)
         {
             //no items in list or capacity is 0 end now
@@ -89,8 +88,8 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
                 }
                
             }
-            Console.Write("Brute Force found ");
-            Console.Write(KnownSolutions.Count.ToString(), "number of solutions"); 
+          
+            Console.WriteLine("Brute Force found " + KnownSolutions.Count.ToString() + " number of solutions"); 
             return KnownSolutions.Count; 
         }
 
@@ -133,7 +132,7 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
             return totalWeight;
         }
 
-        public void MCMCRandomWalk(int maxCap)
+        public void MCMCExperiment(int maxCap)
         {
 
             KnownSolutions.Clear();
@@ -144,7 +143,7 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
 
                 for (int row = 0; row < 100; row++)
                 {
-                    //things.count + 1 because last value is non inclusive
+                    //randomly pick a column to visit
                     int col = rand.Next(0, Things.Count);
                     
                     int prob = rand.Next(1, 2*Things.Count); 
@@ -189,18 +188,21 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
              //Check  Y[j] * w <= Wi-1
           //  }
             //Return Ys
-            Console.WriteLine(KnownSolutions.Count); 
+            Console.WriteLine("MCMC approach found " + KnownSolutions.Count.ToString() + " possible solutions for this knapsack problem"); 
         }
 
        static void Main(string[] args)
         {
+            //to be able to access non-static methods outside of the static Main function
             Program program = new Program();
             int maxCapacity = 50;
             int n = Things.Count;
-            Console.WriteLine(knapSack(maxCapacity, Things, n));
+            Console.WriteLine("The maximum capacity of the knapsack is: " + maxCapacity);
+            Console.WriteLine("Max weight for all " + n + " items is: " + program.MaxWeight(Things).ToString());
+            //Console.WriteLine(knapSack(maxCapacity, Things, n));
             program.BruteForceMethod(maxCapacity, n);
-            Console.WriteLine("\n MCMC ", program.MCMCMethod(), "number of solutions");
-            program.MCMCRandomWalk(maxCapacity);
+           // Console.WriteLine("\n MCMC ", program.MCMCMethod(), "number of solutions");
+            program.MCMCExperiment(maxCapacity);
         }
     }
 
