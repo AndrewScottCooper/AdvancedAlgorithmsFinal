@@ -139,6 +139,7 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
         {
 
             KnownSolutions.Clear();
+            //same settings with 100,000 attemps tripled execution time and doubled results over taking brute force in number of solutions
             for(int i = 0; i < 10000; i++)
             {
                 int[,] randomWalkMatrix = new int[100, Things.Count];
