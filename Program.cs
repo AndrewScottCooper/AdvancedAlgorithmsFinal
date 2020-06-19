@@ -122,7 +122,8 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
 
             KnownSolutions.Clear();
             //same settings with 100,000 attemps tripled execution time and doubled results over taking brute force in number of solutions
-            for(int i = 0; i < 10000; i++)
+            int attemptedSols = 10000;
+            for(int i = 0; i < attemptedSols; i++)
             {
                 int[,] randomWalkMatrix = new int[100, Things.Count];
                 Solution tempSol = new Solution();
@@ -187,7 +188,8 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
              //Check  Y[j] * w <= Wi-1
           //  }
             //Return Ys
-            Console.WriteLine("MCMC experimental approach found " + KnownSolutions.Count.ToString() + " possible solutions for this knapsack problem"); 
+            Console.WriteLine("MCMC experimental approach found " + KnownSolutions.Count.ToString() + " possible solutions");
+            Console.WriteLine("Out of " + attemptedSols + " attempts with a success rate of " + ((float)KnownSolutions.Count/(float)attemptedSols)*100 + "% per attempt");
         }
 
        static void Main(string[] args)
