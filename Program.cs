@@ -24,6 +24,7 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
             new Item(10, 3),
             new Item(4, 4),
             new Item(15, 6),
+            new Item(19, 9),
             new Item(15, 10),
             new Item(17, 12),
             new Item(9, 15),
@@ -89,7 +90,7 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
                
             }
           
-            Console.WriteLine("Brute Force found " + KnownSolutions.Count.ToString() + " number of solutions"); 
+            Console.WriteLine("Brute Force found " + KnownSolutions.Count.ToString() + " possible solutions"); 
             return KnownSolutions.Count; 
         }
 
@@ -195,7 +196,7 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
         {
             //to be able to access non-static methods outside of the static Main function
             Program program = new Program();
-            int maxCapacity = 50;
+            int maxCapacity = 60;
             int n = Things.Count;
             Console.WriteLine("The maximum capacity of the knapsack is: " + maxCapacity);
             Console.WriteLine("Max weight for all " + n + " items is: " + program.MaxWeight(Things).ToString());
