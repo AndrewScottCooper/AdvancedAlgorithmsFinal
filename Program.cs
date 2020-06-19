@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 
 
 namespace AdvancedAlgorithmsFinalProjectExperiments
@@ -189,21 +191,25 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
              //Check  Y[j] * w <= Wi-1
           //  }
             //Return Ys
-            Console.WriteLine("MCMC approach found " + KnownSolutions.Count.ToString() + " possible solutions for this knapsack problem"); 
+            Console.WriteLine("MCMC experimental approach found " + KnownSolutions.Count.ToString() + " possible solutions for this knapsack problem"); 
         }
 
        static void Main(string[] args)
         {
             //to be able to access non-static methods outside of the static Main function
             Program program = new Program();
+            Stopwatch timer = new Stopwatch();
+            timer.Start(); 
             int maxCapacity = 60;
             int n = Things.Count;
             Console.WriteLine("The maximum capacity of the knapsack is: " + maxCapacity);
             Console.WriteLine("Max weight for all " + n + " items is: " + program.MaxWeight(Things).ToString());
             //Console.WriteLine(knapSack(maxCapacity, Things, n));
             program.BruteForceMethod(maxCapacity, n);
-           // Console.WriteLine("\n MCMC ", program.MCMCMethod(), "number of solutions");
+           // Console.WriteLine(" MCMC " + program.MCMCMethod() + " number of solutions");
             program.MCMCExperiment(maxCapacity);
+            timer.Stop();
+            Console.WriteLine("executed in " + timer.ElapsedMilliseconds + "ms"); 
         }
     }
 
