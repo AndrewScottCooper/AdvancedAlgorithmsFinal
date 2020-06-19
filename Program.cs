@@ -96,24 +96,6 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
             return KnownSolutions.Count; 
         }
 
-        //MCMC
-        public int MCMCMethod()
-        {
-            KnownSolutions.Clear();
-            //Total possible weight of all items
-            for (int i = 0; i < 5000; i++)
-            {
-                int itemTW = MaxWeight(Things);
-            }
-
-            int omega = 1; 
-           //second for loop
-           //omega = omega * p[i]
-
-
-            //return 1/omega
-            return KnownSolutions.Count;
-        }
 
         //Compare if new solution already exist, if it doesn't then its new and returns true
         public bool checkSolution(List<Item> test, List<Solution> existing)
