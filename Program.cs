@@ -63,10 +63,10 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
         {
             int randomIndex;
             int attempts;
-
+            int limit = 10000;
             KnownSolutions.Clear();
           //large number to sample possible solutions, more items, higher this should be
-            for (int i =0; i <= 10000; i++)
+            for (int i =0; i <= limit; i++)
             {
                 Solution tempSol = new Solution();
                 //random amount of times to attempt to solve knapsack
@@ -92,7 +92,8 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
                
             }
           
-            Console.WriteLine("Brute Force found " + KnownSolutions.Count.ToString() + " possible solutions"); 
+            Console.WriteLine("Brute Force found " + KnownSolutions.Count.ToString() + " possible solutions out of " + limit + " attempts");
+            Console.WriteLine("with a probability for success at " + (float)KnownSolutions.Count/ (float)limit * 100 + "% per attempt");
             return KnownSolutions.Count; 
         }
 
@@ -189,7 +190,7 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
           //  }
             //Return Ys
             Console.WriteLine("MCMC experimental approach found " + KnownSolutions.Count.ToString() + " possible solutions");
-            Console.WriteLine("Out of " + attemptedSols + " attempts with a success rate of " + ((float)KnownSolutions.Count/(float)attemptedSols)*100 + "% per attempt");
+            Console.WriteLine("Out of " + attemptedSols + " attempts with a probability for success at " + ((float)KnownSolutions.Count/(float)attemptedSols)*100 + "% per attempt");
         }
 
        static void Main(string[] args)
