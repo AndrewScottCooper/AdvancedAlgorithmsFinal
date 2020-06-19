@@ -148,10 +148,7 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
                 //starting location for random walk
                 int col = 0;
                 for (int row = 0; row < 100; row++)
-                {
-
-                    //randomly pick a column to visit
-                    
+                {     
                     int alpha = rand.Next(0, Things.Count);
                     //if randomly chosen alpha is within 1 space from current column move, else stay
                     if(col == alpha +1 || col == alpha - 1)
