@@ -63,7 +63,7 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
         {
             int randomIndex;
             int attempts;
-            int limit = 10000;
+            int limit = 100000;
             KnownSolutions.Clear();
           //large number to sample possible solutions, more items, higher this should be
             for (int i =0; i <= limit; i++)
@@ -123,7 +123,7 @@ namespace AdvancedAlgorithmsFinalProjectExperiments
 
             KnownSolutions.Clear();
             //same settings with 100,000 attemps tripled execution time and doubled results over taking brute force in number of solutions
-            int attemptedSols = 10000;
+            int attemptedSols = 100000;
             for(int i = 0; i < attemptedSols; i++)
             {
                 int[,] randomWalkMatrix = new int[100, Things.Count];
